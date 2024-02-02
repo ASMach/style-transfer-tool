@@ -212,4 +212,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     train_transfer_image_style(
-        args.source, args.target, args, outfile, args.epochs)
+        args.source, args.target, args.outfile, args.epochs)
