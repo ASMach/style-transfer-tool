@@ -202,7 +202,7 @@ if __name__ == "__main__":
     check_device()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", type=str, help="source image name")
+    parser.add_argument("--source", type=str, help="style source image name")
     parser.add_argument("--target", type=str, help="image to change style of")
     parser.add_argument("--outfile", type=str,
                         help="image output file path and name")
