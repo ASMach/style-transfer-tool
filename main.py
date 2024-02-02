@@ -198,9 +198,9 @@ def train_transfer_image_style(content_name, image_name, outfile, epoch=250):
     plt.imshow(mpimg.imread(outfile))
 
 
-if __name__ == "__main__":
-    check_device()
+device = check_device()
 
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=str, help="style source image name")
     parser.add_argument("--target", type=str, help="image to change style of")
