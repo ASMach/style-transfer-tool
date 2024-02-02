@@ -1,7 +1,7 @@
-python -m pip install argparse
-python -m pip install torch
-python -m pip install torchvision
-python -m pip install matplotlib
-python -m pip install pillow
-python -m pip install numpy
-python -m pip install tqdm
+python -m pip3 install argparse
+python -m pip3 install torch
+python -m pip3 install torchvision
+python -m pip3 install matplotlib
+python -m pip3 install pillow
+python -m pip3 install numpy
+python -m pip3 install tqdm
