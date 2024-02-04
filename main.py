@@ -159,8 +159,8 @@ class VGG(nn.Module):
 
 def train_transfer_image_style(source, target, outfile, epoch=250):
     # Loading the original and the style image
-    content_image = image_loader(source)
-    style_image = image_loader(target)
+    content_image = image_loader(target)
+    style_image = image_loader(source)
 
     show_images([source, target],
                 titles=['Content image', 'Style image'])
