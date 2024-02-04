@@ -54,8 +54,10 @@ style_urls = dict(
     la_muse="./transfer_source/la_muse.jpg",
 )
 
-content_name = 'oxford'  # @param from content_urls
-style_name = 'the_scream'  # @param from style_urls
+# initialize the paramerters required for fitting the model
+lr = 0.004
+alpha = 8
+beta = 70
 
 # Helper functions
 
@@ -155,12 +157,12 @@ class VGG(nn.Module):
 # Core of the transfer system
 
 
-def train_transfer_image_style(content_name, image_name, outfile, epoch=250):
+def train_transfer_image_style(source, target, outfile, epoch=250):
     # Loading the original and the style image
-    content_image = image_loader(content_name)
-    style_image = image_loader(image_name)
+    content_image = image_loader(source)
+    style_image = image_loader(target)
 
-    show_images([content_urls[content_name], style_urls[style_name]],
+    show_images([source, target],
                 titles=['Content image', 'Style image'])
 
     # Creating the generated image from the original image
@@ -168,11 +170,6 @@ def train_transfer_image_style(content_name, image_name, outfile, epoch=250):
 
     # Load the model to the GPU
     model = VGG().to(device).eval()
-
-    # initialize the paramerters required for fitting the model
-    lr = 0.004
-    alpha = 8
-    beta = 70
 
     # using adam optimizer and it will update the generated image not the model parameter
     optimizer = optim.Adam([generated_image], lr=lr)
