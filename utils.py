@@ -23,7 +23,7 @@ def image_loader(path, device):
     loader = transforms.Compose(
         [transforms.Resize((512, 512)), transforms.ToTensor()])
     # The preprocessing steps involves resizing the image and then converting it to a tensor
-    image = loader(image).unsqueeze(0)
+    image = loader(image.convert('RGB')).unsqueeze(0)
     return image.to(device, torch.float)
 
 
