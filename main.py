@@ -73,13 +73,11 @@ def train_transfer_image_style(source, target, outfile, epoch=250, model_name='v
     generated_image = content_image.clone().requires_grad_(True)
 
     # Load the model to the GPU
-    model = None
-    if model_name is 'vgg16':
+    model = VGG().to(device).eval()
+    if model_name == 'vgg16':
         model = VGG16().to(device).eval()
-    elif model_name is 'vgg19':
+    elif model_name == 'vgg19':
         model = VGG19().to(device).eval()
-    elif model_name is 'vgg':
-        model = VGG().to(device).eval()
 
     # using adam optimizer and it will update the generated image not the model parameter
     optimizer = optim.Adam([generated_image], lr=lr)
@@ -118,6 +116,8 @@ if __name__ == "__main__":
                         choices=['vgg16', 'vgg19', 'vgg'], default='vgg')
 
     args = parser.parse_args()
+
+    print(f"Model Type: {args.model}")
 
     train_transfer_image_style(
         args.source, args.target, args.outfile, args.epochs, args.model)
