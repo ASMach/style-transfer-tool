@@ -11,7 +11,7 @@ from torchvision.utils import save_image
 
 from tqdm import tqdm
 
-from vgg_nets import VGG
+from vgg_nets import VGG, VGG16, VGG19
 
 content_urls = dict(
     oxford="./test_img/oxford.jpg",
@@ -61,7 +61,7 @@ beta = 70
 # Core of the transfer system
 
 
-def train_transfer_image_style(source, target, outfile, epoch=250):
+def train_transfer_image_style(source, target, outfile, epoch=250, model_name='vgg'):
     # Loading the original and the style image
     content_image = utils.image_loader(target, device)
     style_image = utils.image_loader(source, device)
@@ -73,7 +73,13 @@ def train_transfer_image_style(source, target, outfile, epoch=250):
     generated_image = content_image.clone().requires_grad_(True)
 
     # Load the model to the GPU
-    model = VGG().to(device).eval()
+    model = None
+    if model_name is 'vgg16':
+        model = VGG16().to(device).eval()
+    elif model_name is 'vgg19':
+        model = VGG19().to(device).eval()
+    elif model_name is 'vgg':
+        model = VGG().to(device).eval()
 
     # using adam optimizer and it will update the generated image not the model parameter
     optimizer = optim.Adam([generated_image], lr=lr)
@@ -109,9 +115,9 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int,
                         help="number of style transfer cycles", default=250)
     parser.add_argument("--model", type=str,
-                        choices=['vgg16', 'vgg19'], default='vgg')
+                        choices=['vgg16', 'vgg19', 'vgg'], default='vgg')
 
     args = parser.parse_args()
 
     train_transfer_image_style(
-        args.source, args.target, args.outfile, args.epochs)
+        args.source, args.target, args.outfile, args.epochs, args.model)

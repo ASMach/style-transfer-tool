@@ -32,7 +32,7 @@ class VGG(torch.nn.Module):
         return features
 
 
-class Vgg16(torch.nn.Module):
+class VGG16(torch.nn.Module):
     """Only those layers are exposed which have already proven to work nicely."""
 
     def __init__(self, requires_grad=False, show_progress=False):
@@ -188,7 +188,7 @@ class Vgg16Experimental(torch.nn.Module):
         return out
 
 
-class Vgg19(torch.nn.Module):
+class VGG19(torch.nn.Module):
     """
     Used in the original NST paper, only those layers are exposed which were used in the original paper
 
