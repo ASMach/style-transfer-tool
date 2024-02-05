@@ -67,7 +67,7 @@ def train_transfer_image_style(source, target, outfile, epoch=250):
     style_image = utils.image_loader(source, device)
 
     utils.show_images([source, target],
-                      titles=['Content image', 'Style image'])
+                      titles=['Style image', 'Content image'])
 
     # Creating the generated image from the original image
     generated_image = content_image.clone().requires_grad_(True)
