@@ -9,6 +9,8 @@ import utils as utils
 from PIL import Image
 from torchvision.utils import save_image
 
+from train_transfer_image_style import train_transfer_image_style
+
 from tqdm import tqdm
 
 from vgg_nets import VGG, VGG16, VGG19
