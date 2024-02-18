@@ -61,10 +61,10 @@ beta = 70
 # Core of the transfer system
 
 
-def train_transfer_image_style(source, target, outfile, epoch=250, model_name='vgg'):
+def train_transfer_image_style(source, target, outfile, epoch=250, model_name='vgg', width=512, height=512):
     # Loading the original and the style image
-    content_image = utils.image_loader(target, device)
-    style_image = utils.image_loader(source, device)
+    content_image = utils.image_loader(target, device, width, height)
+    style_image = utils.image_loader(source, device, width, height)
 
     utils.show_images([source, target],
                       titles=['Style image', 'Content image'])
@@ -114,10 +114,14 @@ if __name__ == "__main__":
                         help="number of style transfer cycles", default=250)
     parser.add_argument("--model", type=str,
                         choices=['vgg16', 'vgg19', 'vgg'], default='vgg')
+    parser.add_argument("--width", type=int,
+                        help="width of image for processing", default=512)
+    parser.add_argument("--height", type=int,
+                        help="height of image for processing", default=512)
 
     args = parser.parse_args()
 
     print(f"Model Type: {args.model}")
 
     train_transfer_image_style(
-        args.source, args.target, args.outfile, args.epochs, args.model)
+        args.source, args.target, args.outfile, args.epochs, args.model, args.width, args.height)

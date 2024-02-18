@@ -17,11 +17,11 @@ def show_images(images, titles=('',), dim=1024):
         plt.show()
 
 
-def image_loader(path, device):
+def image_loader(path, device, width=512, height=512):
     image = Image.open(path)
     # defining the image transformation steps to be performed before feeding them to the model
     loader = transforms.Compose(
-        [transforms.Resize((512, 512)), transforms.ToTensor()])
+        [transforms.Resize((width, height)), transforms.ToTensor()])
     # The preprocessing steps involves resizing the image and then converting it to a tensor
     image = loader(image.convert('RGB')).unsqueeze(0)
     return image.to(device, torch.float)
