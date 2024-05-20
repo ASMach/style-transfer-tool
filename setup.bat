@@ -5,3 +5,12 @@ python -m pip3 install matplotlib
 python -m pip3 install pillow
 python -m pip3 install numpy
 python -m pip3 install tqdm
+python -m pip3 install flask
+python -m pip3 install flask-restful
+python -m pip3 install flask-cors
+python -m pip3 install requests
+python -m pip3 install opencv-python
+python -m pip3 install opencv-python-headless
+python -m pip3 install opencv-contrib-python
+python -m pip3 install opencv-contrib-python-headless
+python -m pip3 install opencv-python-headless
