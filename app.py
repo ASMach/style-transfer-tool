@@ -1,5 +1,5 @@
 from fileinput import filename
-from flask import Flask, request, redirect, flash, url_for
+from flask import Flask, request, redirect, flash, url_for, render_template
 from werkzeug.utils import secure_filename
 from flask_restful import Resource, Api
 from flask_cors import CORS
@@ -27,7 +27,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def home():
-    return "Hello, World from Flask!"
+    return render_template('index.html')
 
 
 @app.route('/transfer_style/<int:epochs>/<int:width>/<int:height>', methods=['POST'])
