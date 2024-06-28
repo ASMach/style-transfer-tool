@@ -6,7 +6,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <h1>Welcome to Art Style Transfer Tool</h1>
-  <p>Upload a picture and a style reference image,
-    then specify how many epochs to train for and how big the image should be.</p>
+  <div>
+    <h1>Welcome to Art Style Transfer Tool</h1>
+    <p>Upload a picture and a style reference image,
+      then specify how many epochs to train for and how big the image should be.</p>
+  </div>
+    <div>
+      <form action = "{{ url_for('transfer_style') }}" method = "POST" enctype="multipart/form-data">   
+        <label>Image</label>
+        <input type="file" name="target" />
+        <br/>
+        <label>Style</label>   
+        <input type="file" name="source" />   
+        <br/>
+        <label>Epochs</label>   
+        <input type="range" min=1 max=50 value=10 step=1>
+        <br/>
+        <input type = "submit" value="Upload">   
+    </form>   
+    </div>
 </body>
