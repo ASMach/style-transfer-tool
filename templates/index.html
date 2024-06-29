@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+  <script>
+    function updateEpochs() {
+        var x = document.getElementById("epochSlider").value;
+        document.getElementById("epochs").innerHTML = "Epochs: " + x;
+    }
+    </script>
   <div>
     <h1>Welcome to Art Style Transfer Tool</h1>
     <p>Upload a picture and a style reference image,
@@ -14,13 +20,16 @@
     <div>
       <form action = "{{ url_for('transfer_style') }}" method = "POST" enctype="multipart/form-data">   
         <label>Image</label>
+        <br/>
         <input type="file" name="target" />
         <br/>
-        <label>Style</label>   
+        <label>Style</label>
+        <br/>
         <input type="file" name="source" />   
         <br/>
-        <label>Epochs</label>   
-        <input type="range" min=1 max=50 value=10 step=1>
+        <label id="epochs">Epochs: 10</label>
+        <br/>
+        <input oninput="updateEpochs()" type="range" id="epochSlider" min=1 max=50 value=10 step=1>
         <br/>
         <input type = "submit" value="Upload">   
     </form>   
