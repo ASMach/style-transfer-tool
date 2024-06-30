@@ -11,6 +11,16 @@
         var x = document.getElementById("epochSlider").value;
         document.getElementById("epochs").innerHTML = "Epochs: " + x;
     }
+
+    function updateWidth() {
+        var x = document.getElementById("widthSlider").value;
+        document.getElementById("width").innerHTML = "Width: " + x;
+    }
+
+    function updateHeight() {
+        var x = document.getElementById("heightSlider").value;
+        document.getElementById("height").innerHTML = "Height: " + x;
+    }
     </script>
   <div>
     <h1>Welcome to Art Style Transfer Tool</h1>
@@ -21,17 +31,25 @@
       <form action = "{{ url_for('transfer_style') }}" method = "POST" enctype="multipart/form-data">   
         <label>Image</label>
         <br/>
-        <input type="file" name="target" />
+        <input type="file" name="target" id="target"/>
         <br/>
         <label>Style</label>
         <br/>
-        <input type="file" name="source" />   
+        <input type="file" name="source" id="source"/>   
         <br/>
         <label id="epochs">Epochs: 10</label>
         <br/>
-        <input oninput="updateEpochs()" type="range" id="epochSlider" min=1 max=50 value=10 step=1>
+        <input oninput="updateEpochs()" type="range" id="epochSlider" name="epochSlider" min=1 max=50 value=10 step=1>
         <br/>
-        <input type = "submit" value="Upload">   
+        <label id="width">Width: 512</label>
+        <br/>
+        <input oninput="updateWidth()" type="range" id="widthSlider" name="widthSlider" min=128 max=2048 value=512 step=8>
+        <br/>
+        <label id="height">Height: 512</label>
+        <br/>
+        <input oninput="updateHeight()" type="range" id="heightSlider" name="heightSlider" min=128 max=2048 value=512 step=8>
+        <br/>
+        <input type="submit" value="Upload">   
     </form>   
     </div>
 </body>
