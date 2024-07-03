@@ -1,10 +1,11 @@
 from fileinput import filename
-from flask import Flask, request, redirect, flash, url_for, render_template
+from flask import Flask, request, redirect, flash, url_for, render_template, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_restful import Resource, Api
 from flask_cors import CORS
 
 import os
+import sys
 
 from train_transfer_image_style import train_transfer_image_style
 
@@ -29,12 +30,27 @@ def allowed_file(filename):
 def home():
     return render_template('index.html')
 
+@app.route('/uploads', methods=['GET'])
+def uploads():
+    files = os.listdir(app.config['OUTPUT_FOLDER'])
+    return render_template('uploads.html', files=files)
 
-@app.route('/transfer_style/<int:epochs>/<int:width>/<int:height>', methods=['POST'])
-def transfer_style(source=None, target=None, epochs=100, width=512, height=512):
-    epochs = request.args.get('epochs', epochs)
-    width = request.args.get('width', width)
-    height = request.args.get('height', height)
+@app.route('/download_file/<name>')
+def download_file(name):
+    return send_from_directory(app.config["OUTPUT_FOLDER"], name)
+
+@app.route('/submit/<int:epochs>/<int:width>/<int:height>', methods=['GET'])
+def submit(epochs, width, height):
+    return f'The inputs you provided are: {epochs}, {width} and {height}'
+
+@app.route('/transfer_style/', methods=['POST'])
+def transfer_style():
+    epochs = request.form['epochSlider']
+    width = request.form['widthSlider']
+    height = request.form['heightSlider']
+
+    print("Epochs: " + epochs, file=sys.stderr)
+    print(f"{width} x {height}", file=sys.stderr)
 
     if request.method == 'POST':
         # check if the post request has the required images
@@ -74,15 +90,7 @@ def transfer_style(source=None, target=None, epochs=100, width=512, height=512):
             'vgg19',
             width,
             height)
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
+    return redirect(url_for("uploads"))
 
 
 if __name__ == "__main__":
