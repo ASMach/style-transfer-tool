@@ -54,11 +54,11 @@ def submit(epochs, width, height):
 
 @app.route('/transfer_style/', methods=['POST'])
 def transfer_style():
-    epochs = request.form['epochSlider']
+    epochs = int(request.form['epochSlider'])
     width = int(request.form['widthSlider'])
     height = int(request.form['heightSlider'])
 
-    print("Epochs: " + epochs, file=sys.stderr)
+    print(f"Epochs: {epochs}", file=sys.stderr)
     print(f"{width} x {height}", file=sys.stderr)
 
     if request.method == 'POST':
