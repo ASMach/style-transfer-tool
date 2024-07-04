@@ -48,10 +48,6 @@ def uploads():
 def download_file(name):
     return send_from_directory(app.config["OUTPUT_FOLDER"], name)
 
-@app.route('/submit/<int:epochs>/<int:width>/<int:height>', methods=['GET'])
-def submit(epochs, width, height):
-    return f'The inputs you provided are: {epochs}, {width} and {height}'
-
 @app.route('/transfer_style/', methods=['POST'])
 def transfer_style():
     epochs = int(request.form['epochSlider'])
