@@ -56,5 +56,3 @@ def train_transfer_image_style(source, target, outfile, epoch=250, model_name='v
         # print the image and save it after each 100 epoch
         if (e/100):
             save_image(generated_image, outfile)
-
-    plt.imshow(mpimg.imread(outfile))
