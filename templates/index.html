@@ -22,17 +22,20 @@
         document.getElementById("height").innerHTML = "Height: " + x;
     }
   </script>
-  <nav>
-    <ul>
-      <li><a href="{{ url_for('uploads') }}">Uploads</a></li>
-    </ul>
-  </nav>
-  <article>
-    <h1>Welcome to Art Style Transfer Tool</h1>
-    <p>Upload a picture and a style reference image,
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('uploads') }}">Uploads</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1>Welcome to Art Style Transfer Tool</h1>
+      <p>Upload a picture and a style reference image,
       then specify how many epochs to train for and how big the image should be.</p>
     </article>
-  <div>
+    <div>
       <form action = "{{ url_for('transfer_style') }}" method = "POST" enctype="multipart/form-data">   
         <label>Image</label>
         <br/>
@@ -55,6 +58,7 @@
         <input oninput="updateHeight()" type="range" id="heightSlider" name="heightSlider" min=128 max=2048 value=512 step=8>
         <br/>
         <input type="submit" value="Upload">   
-    </form>   
+      </form>   
   </div>
+  </main>
 </body>
