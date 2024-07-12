@@ -36,7 +36,7 @@ def allowed_file(filename):
 def home():
     return render_template('index.html')
 
-@app.route('/uploads', methods=['GET'])
+@app.route('/uploads')
 def uploads():
     # Verify the output folder exists and create one if it doesn't
     Path(app.config['OUTPUT_FOLDER']).mkdir(parents=True, exist_ok=True)
@@ -103,7 +103,7 @@ def transfer_style():
                 width,
                 height)
         return redirect(url_for('download_file', name=outfile))
-    return redirect(url_for("uploads"))
+    return redirect("/uploads")
 
 
 if __name__ == "__main__":
