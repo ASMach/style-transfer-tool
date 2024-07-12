@@ -25,9 +25,6 @@ def train_transfer_image_style(source, target, outfile, epoch=250, model_name='v
     content_image = utils.image_loader(target, device, width, height)
     style_image = utils.image_loader(source, device, width, height)
 
-    utils.show_images([source, target],
-                      titles=['Style image', 'Content image'])
-
     # Creating the generated image from the original image
     generated_image = content_image.clone().requires_grad_(True)
 
@@ -59,5 +56,3 @@ def train_transfer_image_style(source, target, outfile, epoch=250, model_name='v
         # print the image and save it after each 100 epoch
         if (e/100):
             save_image(generated_image, outfile)
-
-    plt.imshow(mpimg.imread(outfile))
