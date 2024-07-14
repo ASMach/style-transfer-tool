@@ -7,6 +7,7 @@ from pathlib import Path
 
 import os
 import sys
+import json
 
 from train_transfer_image_style import train_transfer_image_style
 
@@ -42,7 +43,7 @@ def uploads():
     Path(app.config['OUTPUT_FOLDER']).mkdir(parents=True, exist_ok=True)
 
     files = os.listdir(app.config['OUTPUT_FOLDER'])
-    return render_template('uploads.html', files=files)
+    return json.dumps(files)
 
 @app.route('/download_file/<name>')
 def download_file(name):
