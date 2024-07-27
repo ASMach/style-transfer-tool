@@ -20,7 +20,7 @@ function UploadButton() {
 
   const handleDisplayImage = () => {
     var reader = new FileReader();
-    if (!inputRef.current?.files) {
+    if (!inputRef.current?.files || !inputRef.current || !inputRef || !inputRef.current?.files[0]) {
       return (
       <div>
         No Image Selected
