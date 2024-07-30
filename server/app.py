@@ -2,7 +2,7 @@ from fileinput import filename
 from flask import Flask, request, redirect, flash, url_for, render_template, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_restful import Resource, Api
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from pathlib import Path
 
 import os
@@ -38,6 +38,7 @@ def home():
     return render_template('index.html')
 
 @app.route('/uploads')
+@cross_origin()
 def uploads():
     # Verify the output folder exists and create one if it doesn't
     Path(app.config['OUTPUT_FOLDER']).mkdir(parents=True, exist_ok=True)
@@ -46,10 +47,12 @@ def uploads():
     return json.dumps(files)
 
 @app.route('/download_file/<name>')
+@cross_origin()
 def download_file(name):
     return send_from_directory(app.config["OUTPUT_FOLDER"], name)
 
 @app.route('/transfer_style/', methods=['POST'])
+@cross_origin()
 def transfer_style():
     epochs = int(request.form['epochSlider'])
     width = int(request.form['widthSlider'])
