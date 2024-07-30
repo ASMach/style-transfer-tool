@@ -1,5 +1,5 @@
 from fileinput import filename
-from flask import Flask, request, redirect, flash, url_for, render_template, send_from_directory
+from flask import Flask, request, redirect, flash, url_for, render_template, send_from_directory, make_response
 from werkzeug.utils import secure_filename
 from flask_restful import Resource, Api
 from flask_cors import CORS, cross_origin
@@ -27,6 +27,12 @@ app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024  # Max file 512MB
 
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 
+def build_cors_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "*")
+    response.headers.add("Access-Control-Allow-Methods", "*")
+    return response
 
 def allowed_file(filename):
     return '.' in filename and \
