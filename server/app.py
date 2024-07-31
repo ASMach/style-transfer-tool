@@ -10,6 +10,7 @@ import sys
 import json
 
 from train_transfer_image_style import train_transfer_image_style
+from crossdomain import crossdomain
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) 
 
@@ -27,11 +28,12 @@ app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024  # Max file 512MB
 
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 
+@app.after_request
 def build_cors_preflight_response():
     response = make_response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Headers", "*")
-    response.headers.add("Access-Control-Allow-Methods", "*")
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
 def allowed_file(filename):
@@ -58,7 +60,7 @@ def download_file(name):
     return send_from_directory(app.config["OUTPUT_FOLDER"], name)
 
 @app.route('/transfer_style/', methods=['POST'])
-@cross_origin()
+@crossdomain(origin='http://localhost:3000')
 def transfer_style():
     epochs = int(request.form['epochSlider'])
     width = int(request.form['widthSlider'])
