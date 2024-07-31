@@ -60,7 +60,7 @@ def download_file(name):
     return send_from_directory(app.config["OUTPUT_FOLDER"], name)
 
 @app.route('/transfer_style/', methods=['POST'])
-@crossdomain(origin='http://localhost:3000')
+@cross_origin()
 def transfer_style():
     epochs = int(request.form['epochSlider'])
     width = int(request.form['widthSlider'])
