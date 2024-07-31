@@ -2,8 +2,11 @@ import React, { useRef, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+interface Props {
+  parentCallback: any,
+};
 
-function UploadButton() {
+function UploadButton (props : Props) {
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   
@@ -16,7 +19,6 @@ function UploadButton() {
     inputRef.current?.files &&
       setUploadedFileName(inputRef.current.files[0].name);
   };
-
 
   const handleDisplayImage = () => {
     var reader = new FileReader();
@@ -35,21 +37,31 @@ function UploadButton() {
       </div>
     );
   };
+
   const fileValidation = (e: React.RefObject<HTMLInputElement>) => {
-  const filePath = e.current?.value;
+    const filePath = e.current?.value;
  
-  // Allowing file type
-  const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    // Allowing file type
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
     
-  if (filePath && !allowedExtensions.exec(filePath)) {
-    alert('Invalid file type');
-    return false;
+    if (filePath && !allowedExtensions.exec(filePath)) {
+      alert('Invalid file type');
+      return false;
+    }
+    return true;
   }
 
-  return true;
-}
+  // Function triggered when the form is submitted
+  const onTrigger = (e: React.FormEvent<HTMLFormElement>) => {
+    // Call the parent callback function
+    props.parentCallback(
+        e.currentTarget.myname.value
+    );
+    e.preventDefault();
+  };
+
   return (
-    <Form.Group className="m-3">
+    <Form.Group className="m-3" onSubmit={onTrigger}>
       <Form.Label className="mx-3">Choose file: </Form.Label>
       <input
         ref={inputRef}
