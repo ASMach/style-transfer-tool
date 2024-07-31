@@ -5,10 +5,22 @@ import UploadButton from "./UploadButton";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
+import axios from "axios";
+
 export default function Upload() {
   const [epochs, setEpochs] = useState(10);
   const [width, setWidth] = useState(512);
   const [height, setHeight] = useState(512);
+
+  function targetImageCallback(data) {
+    // Update the name in the component's state
+    this.setState({ targetData: data });
+  }
+
+  function styleImageCallback(data) {
+    // Update the name in the component's state
+    this.setState({ styleData: data });
+  }
 
   function handleEpochChange(e) {
     setEpochs(e.target.value);
@@ -22,6 +34,40 @@ export default function Upload() {
     setHeight(e.target.value);
   }
 
+  function uploadImages(e) {
+    e.preventDefault();
+    console.log("Uploading images");
+
+    var formData = new FormData();
+    var targetImage = document.querySelector("#file");
+    var styleImage = document.querySelector("#file");
+    formData.append("target", targetImage.files[0]);
+    formData.append("source", styleImage.files[0]);
+    formData.append("epochs", epochs);
+    formData.append("width", width);
+    formData.append("height", height);
+
+    axios
+      .post("/transfer_style", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
+  }
+
   return (
     <main>
       <article>
@@ -32,12 +78,22 @@ export default function Upload() {
         </p>
       </article>
       <div>
-        <Form>
+        <Form onSubmit={uploadImages}>
           <Form.Label>Image</Form.Label>
-          <UploadButton type="file" name="target" id="target" />
+          <UploadButton
+            type="file"
+            name="target"
+            id="target"
+            parentCallback={targetImageCallback}
+          />
           <br />
           <Form.Label>Style</Form.Label>
-          <UploadButton type="file" name="source" id="source" />
+          <UploadButton
+            type="file"
+            name="source"
+            id="source"
+            parentCallback={styleImageCallback}
+          />
           <br />
           <Form.Label id="epochs">Epochs: {epochs}</Form.Label>
           <Form.Range
