@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from flask_restful import Resource, Api
 from flask_cors import CORS
 from pathlib import Path
+from flask_bootstrap import Bootstrap4
 
 import os
 import sys
@@ -19,6 +20,8 @@ OUTPUT_FOLDER = 'output'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
+
+bootstrap = Bootstrap4(app)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
