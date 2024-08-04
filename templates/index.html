@@ -33,28 +33,32 @@
     </article>
     <div class="row">
       <form action = "{{ url_for('transfer_style') }}" method = "POST" enctype="multipart/form-data">   
-        <label class="form-label">Image</label>
-        <br/>
-        <input type="file" name="target" id="target"/>
-        <br/>
-        <label class="form-label">Style</label>
-        <br/>
-        <input type="file" name="source" id="source"/>   
-        <br/>
-        <label id="epochs" class="form-label">Epochs: 10</label>
-        <br/>
-        <input oninput="updateEpochs()" type="range" id="epochSlider" name="epochSlider" min=1 max=50 value=10 step=1>
-        <br/>
-        <label id="width" class="form-label">Width: 512</label>
-        <br/>
-        <input oninput="updateWidth()" type="range" id="widthSlider" name="widthSlider" min=128 max=2048 value=512 step=8>
-        <br/>
-        <label id="height" class="form-label">Height: 512</label>
-        <br/>
-        <input oninput="updateHeight()" type="range" id="heightSlider" name="heightSlider" min=128 max=2048 value=512 step=8>
-        <br/>
-        <input type="submit" value="Upload">   
-      </form>   
+        <div class="form-group">
+          <label class="form-label">Image</label>
+          <br/>
+          <input type="file" name="target" id="target" class="form-control-file"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Style</label>
+          <br/>
+          <input type="file" name="source" id="source" class="form-control-file"/>   
+        </div>
+        <div class="form-group">
+          <label id="epochs" class="form-label">Epochs: 10</label>
+          <br/>
+          <input oninput="updateEpochs()" type="range" id="epochSlider" name="epochSlider" min=1 max=50 value=10 step=1 class="form-control">
+          <br/>
+          <label id="width" class="form-label">Width: 512</label>
+          <br/>
+          <input oninput="updateWidth()" type="range" id="widthSlider" name="widthSlider" min=128 max=2048 value=512 step=8 class="form-control">
+          <br/>
+          <label id="height" class="form-label">Height: 512</label>
+          <br/>
+          <input oninput="updateHeight()" type="range" id="heightSlider" name="heightSlider" min=128 max=2048 value=512 step=8 class="form-control">
+          <br/>
+        </div>
+        <input type="submit" value="Upload" class="btn btn-primary">   
+      </form>
   </div>
   </main>
 </body>
