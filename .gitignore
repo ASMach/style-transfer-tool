@@ -1,1 +1,6 @@
 /venv
+/uploads
+/output
+/server/venv
+/client/node_modules
+/__pycache__
