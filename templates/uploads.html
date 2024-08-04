@@ -8,6 +8,7 @@
     <title>Uploaded Files</title>
 </head>
 <body>
+    {% include 'navbar.html' %}
     {{ bootstrap.load_js() }}
     <h1>Style Transferred Files</h1>
     <ul>
@@ -15,6 +16,5 @@
         <li><a href="download_file/{{file}}">{{ file }}</a></li>
         {% endfor %}
     </ul>
-    <a href="/">Upload more files</a>
 </body>
 </html>
