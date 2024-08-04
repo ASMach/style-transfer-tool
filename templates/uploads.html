@@ -10,9 +10,9 @@
     <h1>Style Transferred Files</h1>
     <ul>
         {% for file in files %}
-        <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
+        <li><a href="download_file/{{file}}">{{ file }}</a></li>
         {% endfor %}
     </ul>
-    <a href="{{ url_for('index') }}">Upload more files</a>
+    <a href="/">Upload more files</a>
 </body>
 </html>
