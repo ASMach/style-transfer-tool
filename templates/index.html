@@ -59,6 +59,44 @@
         </div>
         <input type="submit" value="Upload" class="btn btn-primary">   
       </form>
-  </div>
+    </div>
   </main>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#training-form').submit(function(event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+
+        const epochs = $('input[name="epochs"]').val();
+
+        $.ajax({
+          url: "/transfer_style",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({ epochs: epochs }),
+            success: function(data) {
+              const taskId = data.task_id;
+              $('#progress-container').show();
+              let interval = setInterval(function() {
+                $.get('/status/' + taskId, function(data) {
+                  if (data.state == 'PENDING') {
+                    $('#progress-text').text('Pending...');
+                  } else if (data.state != 'FAILURE') {
+                    const progress = Math.floor((data.current / data.total) * 100);
+                    $('#progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+                    $('#progress-text').text(progress + '%');
+                    if (progress >= 100) {
+                      clearInterval(interval);
+                      $('#progress-text').text('Training Completed!');
+                    }
+                  } else {
+                    $('#progress-text').text('Error: ' + data.status);
+                    clearInterval(interval);
+                  }
+                });
+              }, 1000);
+            }
+          });
+        });
+    });
+  </script>
 </body>
