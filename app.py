@@ -6,6 +6,7 @@ from flask_restful import Resource, Api
 from flask_cors import CORS
 from flask_bootstrap import Bootstrap4
 from pathlib import Path
+from PIL import Image
 from werkzeug.utils import secure_filename
 
 import os
@@ -108,7 +109,7 @@ def task_status(task_id):
 
 @app.route('/download_file/<name>')
 def download_file(name):
-    return send_from_directory(app.config["OUTPUT_FOLDER"], name)
+    return send_from_directory(app.config["OUTPUT_FOLDER"], os.path.join(name, 'image.png'))
 
 @app.route('/transfer_style/', methods=['POST'])
 def transfer_style():
@@ -161,7 +162,7 @@ def transfer_style():
             outpath = os.path.join(app.config['OUTPUT_FOLDER'], f'{source_filename}-{target_filename}')
             Path(outpath).mkdir(parents=True, exist_ok=True)
 
-            outfile = f'{source_filename}-{target_filename}.png'
+            outfile = 'image.png'
             # Actually generate the style transfer image
             task = train_transfer_image_style(
                 source,
@@ -172,7 +173,14 @@ def transfer_style():
                 'vgg19',
                 width,
                 height)
-        return redirect(url_for('download_file', name=os.path.join(outpath, outfile)))
+            # Generate thumbnail
+            full_outfile = os.path.join(outpath, outfile)
+            im = Image.open(full_outfile)
+
+            thumb_size = 128, 128
+            
+            im.thumbnail(thumb_size, Image.Resampling.LANCZOS)
+            im.save(os.path.join(outpath, 'thumb.png'), "PNG")
     return redirect("/uploads")
 
 
