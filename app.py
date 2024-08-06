@@ -153,18 +153,26 @@ def transfer_style():
             # Verify the output folder exists and create one if it doesn't
             Path(app.config['OUTPUT_FOLDER']).mkdir(parents=True, exist_ok=True)
 
+            # Split file extensions from names
+            source_filename = os.path.splitext(source_filename)[0]
+            target_filename = os.path.splitext(target_filename)[0]
+
+            # Create a folder for the source output image
+            outpath = os.path.join(app.config['OUTPUT_FOLDER'], f'{source_filename}-{target_filename}')
+            Path(outpath).mkdir(parents=True, exist_ok=True)
+
             outfile = f'{source_filename}-{target_filename}.png'
             # Actually generate the style transfer image
             task = train_transfer_image_style(
                 source,
                 target,
-                os.path.join(app.config['OUTPUT_FOLDER'],
+                os.path.join(outpath,
                          outfile),
                 epochs,
                 'vgg19',
                 width,
                 height)
-        return redirect(url_for('download_file', name=outfile))
+        return redirect(url_for('download_file', name=os.path.join(outpath, outfile)))
     return redirect("/uploads")
 
 
