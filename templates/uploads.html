@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {{ bootstrap.load_css() }}
     <title>Uploaded Files</title>
 </head>
 <body>
+    {% include 'navbar.html' %}
+    {{ bootstrap.load_js() }}
     <h1>Style Transferred Files</h1>
     <ul>
         {% for file in files %}
         <li><a href="download_file/{{file}}">{{ file }}</a></li>
         {% endfor %}
     </ul>
-    <a href="/">Upload more files</a>
 </body>
 </html>

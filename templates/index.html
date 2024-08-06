@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {{ bootstrap.load_css() }}
 </head>
 <body>
+  {{ bootstrap.load_js() }}
   <script>
     function updateEpochs() {
         var x = document.getElementById("epochSlider").value;
@@ -22,43 +24,41 @@
         document.getElementById("height").innerHTML = "Height: " + x;
     }
   </script>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="{{ url_for('uploads') }}">Uploads</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
+  {% include 'navbar.html' %}
+  <main class="container-fluid">
     <article>
       <h1>Welcome to Art Style Transfer Tool</h1>
       <p>Upload a picture and a style reference image,
       then specify how many epochs to train for and how big the image should be.</p>
     </article>
-    <div>
+    <div class="row">
       <form action = "{{ url_for('transfer_style') }}" method = "POST" enctype="multipart/form-data">   
-        <label>Image</label>
-        <br/>
-        <input type="file" name="target" id="target"/>
-        <br/>
-        <label>Style</label>
-        <br/>
-        <input type="file" name="source" id="source"/>   
-        <br/>
-        <label id="epochs">Epochs: 10</label>
-        <br/>
-        <input oninput="updateEpochs()" type="range" id="epochSlider" name="epochSlider" min=1 max=50 value=10 step=1>
-        <br/>
-        <label id="width">Width: 512</label>
-        <br/>
-        <input oninput="updateWidth()" type="range" id="widthSlider" name="widthSlider" min=128 max=2048 value=512 step=8>
-        <br/>
-        <label id="height">Height: 512</label>
-        <br/>
-        <input oninput="updateHeight()" type="range" id="heightSlider" name="heightSlider" min=128 max=2048 value=512 step=8>
-        <br/>
-        <input type="submit" value="Upload">   
-      </form>   
+        <div class="form-group">
+          <label class="form-label">Image</label>
+          <br/>
+          <input type="file" name="target" id="target" class="form-control-file"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Style</label>
+          <br/>
+          <input type="file" name="source" id="source" class="form-control-file"/>   
+        </div>
+        <div class="form-group">
+          <label id="epochs" class="form-label">Epochs: 10</label>
+          <br/>
+          <input oninput="updateEpochs()" type="range" id="epochSlider" name="epochSlider" min=1 max=50 value=10 step=1 class="form-control">
+          <br/>
+          <label id="width" class="form-label">Width: 512</label>
+          <br/>
+          <input oninput="updateWidth()" type="range" id="widthSlider" name="widthSlider" min=128 max=2048 value=512 step=8 class="form-control">
+          <br/>
+          <label id="height" class="form-label">Height: 512</label>
+          <br/>
+          <input oninput="updateHeight()" type="range" id="heightSlider" name="heightSlider" min=128 max=2048 value=512 step=8 class="form-control">
+          <br/>
+        </div>
+        <input type="submit" value="Upload" class="btn btn-primary">   
+      </form>
   </div>
   </main>
 </body>

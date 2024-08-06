@@ -1,11 +1,3 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-}
-
 h1 {
     color: #333;
 }
@@ -18,27 +10,4 @@ header {
     height: 48px;
     background-color: #00ccff;
     width: 100vh;
-}
-
-header nav {
-    display: block;
-    margin: 0;
-    align-items: top;
-    width: 100vh;
-    height: 100vh;
-}
-
-header nav ul {
-    display: flex;
-    margin-left: 70%;
-    list-style: none;
-}
-    
-header nav ul li {
-    padding-left: 10%;
-}
-    
-header a {
-    text-decoration: none;
-    color: brown;
 }

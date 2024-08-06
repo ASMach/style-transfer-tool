@@ -1,4 +1,5 @@
 python -m pip3 install argparse
+python -m pip3 install celery
 python -m pip3 install torch
 python -m pip3 install torchvision
 python -m pip3 install matplotlib
