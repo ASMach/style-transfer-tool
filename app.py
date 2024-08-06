@@ -1,10 +1,11 @@
+from celery import Celery
 from fileinput import filename
-from flask import Flask, request, redirect, flash, url_for, render_template, send_from_directory
-from werkzeug.utils import secure_filename
+from flask import Flask, request, redirect, flash, url_for, render_template, send_from_directory, Response
 from flask_restful import Resource, Api
 from flask_cors import CORS
-from pathlib import Path
 from flask_bootstrap import Bootstrap4
+from pathlib import Path
+from werkzeug.utils import secure_filename
 
 import os
 import sys
@@ -29,11 +30,9 @@ app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024  # Max file 512MB
 
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route('/')
 def home():
