@@ -1,6 +1,7 @@
-from celery import Celery
+from celery_setup import make_celery
+from celery.result import AsyncResult
 from fileinput import filename
-from flask import Flask, request, redirect, flash, url_for, render_template, send_from_directory, Response
+from flask import Flask, request, redirect, flash, jsonify, url_for, render_template, send_from_directory, Response
 from flask_restful import Resource, Api
 from flask_cors import CORS
 from flask_bootstrap import Bootstrap4
@@ -8,7 +9,10 @@ from pathlib import Path
 from werkzeug.utils import secure_filename
 
 import os
+import redis
 import sys
+import time
+import tqdm
 
 from train_transfer_image_style import train_transfer_image_style
 
@@ -27,12 +31,32 @@ bootstrap = Bootstrap4(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024  # Max file 512MB
+app.config['CELERY_BROKER_URL'] = os.environ.get('CELERY_URL')
+app.config['CELERY_RESULT_BACKEND'] = os.environ.get('CELERY_URL')
 
 cors = CORS(app, resources={r"*": {"origins": "*"}})
+
+celery = make_celery(app)
+
+redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@celery.task(bind=True)
+def long_task(self, total):
+    task_id = self.request.id
+    progress_bar = tqdm(total=total)
+    
+    for i in range(total):
+        time.sleep(1)  # Simulate a task taking time
+        progress_bar.update(1)
+        redis_client.set(task_id, i + 1)
+    
+    progress_bar.close()
+    return {'current': total, 'total': total, 'status': 'Task completed!'}
 
 @app.route('/')
 def home():
@@ -45,6 +69,42 @@ def uploads():
 
     files = os.listdir(app.config['OUTPUT_FOLDER'])
     return render_template('uploads.html', files=files)
+
+@app.route('/status/<task_id>', methods=['GET'])
+def task_status(task_id):
+    task = AsyncResult(task_id, app=celery)
+    
+    if task.state == 'PENDING':
+        response = {
+            'state': task.state,
+            'current': 0,
+            'total': 1,
+            'status': 'Pending...'
+        }
+    elif task.state != 'FAILURE':
+        progress = redis_client.get(task_id)
+        if progress:
+            current = int(progress)
+        else:
+            current = 0
+        response = {
+            'state': task.state,
+            'current': current,
+            'total': task.info.get('total', 1),
+            'status': task.info.get('status', '')
+        }
+        if 'result' in task.info:
+            response['result'] = task.info['result']
+    else:
+        # something went wrong in the background job
+        response = {
+            'state': task.state,
+            'current': 1,
+            'total': 1,
+            'status': str(task.info),  # this is the exception raised
+        }
+    return jsonify(response)
+
 
 @app.route('/download_file/<name>')
 def download_file(name):
@@ -95,7 +155,7 @@ def transfer_style():
 
             outfile = f'{source_filename}-{target_filename}.png'
             # Actually generate the style transfer image
-            train_transfer_image_style(
+            task = train_transfer_image_style(
                 source,
                 target,
                 os.path.join(app.config['OUTPUT_FOLDER'],
