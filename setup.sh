@@ -10,6 +10,7 @@ pip3 install flask
 pip3 install flask-restful
 pip3 install flask-cors
 pip3 install requests
+pip3 install redis
 pip3 install opencv-python
 pip3 install opencv-python-headless
 pip3 install opencv-contrib-python
