@@ -13,7 +13,11 @@
     <h1>Style Transferred Files</h1>
     <ul class="list-group">
         {% for file in files %}
-        <li class="list-group-item"><a href="image/{{file}}"><img src="thumb/{{file}}" class="img-thumbnail rounded"/></a></li>
+        <li class="list-group-item">
+            <a href="image/{{file}}" download>
+                <img src="thumb/{{file}}" class="img-thumbnail rounded"/>
+            </a>
+        </li>
         {% endfor %}
     </ul>
 </body>
