@@ -11,9 +11,13 @@
     {% include 'navbar.html' %}
     {{ bootstrap.load_js() }}
     <h1>Style Transferred Files</h1>
-    <ul>
+    <ul class="list-group">
         {% for file in files %}
-        <li><a href="download_file/{{file}}">{{ file }}</a></li>
+        <li class="list-group-item">
+            <a href="image/{{file}}" download>
+                <img src="thumb/{{file}}" class="img-thumbnail rounded"/>
+            </a>
+        </li>
         {% endfor %}
     </ul>
 </body>
