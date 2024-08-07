@@ -110,8 +110,8 @@ def task_status(task_id):
 def thumb(name):
     return send_from_directory(app.config["OUTPUT_FOLDER"], os.path.join(name, 'thumb.png'))
 
-@app.route('/download_file/<name>')
-def download_file(name):
+@app.route('/image/<name>')
+def image(name):
     return send_from_directory(app.config["OUTPUT_FOLDER"], os.path.join(name, 'image.png'))
 
 @app.route('/transfer_style/', methods=['POST'])
