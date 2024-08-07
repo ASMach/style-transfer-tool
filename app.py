@@ -1,8 +1,6 @@
 from celery_setup import make_celery
 from celery.result import AsyncResult
-from fileinput import filename
-from flask import Flask, request, redirect, flash, jsonify, url_for, render_template, send_from_directory, Response
-from flask_restful import Resource, Api
+from flask import Flask, request, redirect, flash, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from flask_bootstrap import Bootstrap4
 from pathlib import Path
