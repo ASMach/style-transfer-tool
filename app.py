@@ -112,6 +112,12 @@ def thumb(name):
 def image(name):
     return send_from_directory(app.config["OUTPUT_FOLDER"], os.path.join(name, 'image.png'))
 
+@app.route('/delete/<name>')
+def delete(name):
+    path = app.config["OUTPUT_FOLDER"], os.path.join(name, 'image.png')
+    if os.path.exists(path):
+        os.remove(path)
+
 @app.route('/transfer_style/', methods=['POST'])
 def transfer_style():
     epochs = int(request.form['epochSlider'])
